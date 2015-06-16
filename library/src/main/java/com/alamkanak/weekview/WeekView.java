@@ -862,7 +862,10 @@ public class WeekView extends View {
                     eventRect.left = j / columns.size();
                     eventRect.top = eventRect.event.getStartTime().get(Calendar.HOUR_OF_DAY) * 60 + eventRect.event.getStartTime().get(Calendar.MINUTE);
                     eventRect.bottom = eventRect.event.getEndTime().get(Calendar.HOUR_OF_DAY) * 60 + eventRect.event.getEndTime().get(Calendar.MINUTE);
-                    mEventRects.add(eventRect);
+                    if (eventRect.event.getName().isEmpty())
+                        mEventRects.add(0,eventRect);
+                    else
+                        mEventRects.add(eventRect);
                 }
                 j++;
             }
@@ -877,6 +880,8 @@ public class WeekView extends View {
      * @return true if the events overlap.
      */
     private boolean isEventsCollide(WeekViewEvent event1, WeekViewEvent event2) {
+        if (event1.getName().isEmpty()) return false;
+        if (event2.getName().isEmpty()) return false;
         long start1 = event1.getStartTime().getTimeInMillis();
         long end1 = event1.getEndTime().getTimeInMillis();
         long start2 = event2.getStartTime().getTimeInMillis();
