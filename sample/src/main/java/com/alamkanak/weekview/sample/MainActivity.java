@@ -59,15 +59,19 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
                     byte len  = data[index];
                     byte type = data[index+1];
                     if (type == (byte)0xFF)
+                        // 4 bytes can be skipped (length + type + 2 bytes MID)
                         for (int i = index + 4; i < index + len + 1; i++)
                             map.add(data[i]);
+                    // continue with next block
                     index += len+1;
                 }
 
-                //Toast.makeText(MainActivity.this, "Seen BTLE device" + result.getDevice().getName(), Toast.LENGTH_SHORT).show();
+                // Log raw data for debugging
                 StringBuilder sb = new StringBuilder();
                 for (Byte b: map) sb.append(String.format("%02X ",b.byteValue()));
-                Log.d("BT",sb.toString());
+                Log.d("BT",String.format("length: %d, data: ",map.size()) + sb.toString());
+
+                // TODO: parse map
             }
         }
         @Override public void onBatchScanResults(List<ScanResult> results) {
