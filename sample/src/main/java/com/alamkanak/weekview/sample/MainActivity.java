@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import android.bluetooth.*;
+import android.bluetooth.le.*;
+import android.util.Log;
 
 
 /**
@@ -31,6 +34,47 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     private static final int TYPE_WEEK_VIEW = 3;
     private int mWeekViewType = TYPE_THREE_DAY_VIEW;
     private WeekView mWeekView;
+
+    // BTLE stuff
+    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothLeScanner btleScanner;
+    private BluetoothLeAdvertiser btleAdvertiser;
+    //private List<ScanFilter> btleFilter;
+    //private ScanSettings btleSettings;
+
+    class myScanCallback extends ScanCallback {
+        @Override public void onScanResult(int callbackType, ScanResult result) {
+
+            // check if MSD with ID "CC" is available
+            byte[] data = result.getScanRecord().getManufacturerSpecificData(0x4343);
+            if (data != null) {
+
+                // get raw data - need to parse on our own
+                data = result.getScanRecord().getBytes();
+                ArrayList<Byte> map = new ArrayList<Byte>();
+                int index = 0;
+
+                // search for MSD blocks (type = 0xFF) and append raw data to ArrayList
+                while (index < data.length) {
+                    byte len  = data[index];
+                    byte type = data[index+1];
+                    if (type == (byte)0xFF)
+                        for (int i = index + 4; i < index + len + 1; i++)
+                            map.add(data[i]);
+                    index += len+1;
+                }
+
+                //Toast.makeText(MainActivity.this, "Seen BTLE device" + result.getDevice().getName(), Toast.LENGTH_SHORT).show();
+                StringBuilder sb = new StringBuilder();
+                for (Byte b: map) sb.append(String.format("%02X ",b.byteValue()));
+                Log.d("BT",sb.toString());
+            }
+        }
+        @Override public void onBatchScanResults(List<ScanResult> results) {
+            for (ScanResult sr: results)
+                onScanResult(0, sr);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +97,19 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         // Set up a date time interpreter to interpret how the date and time will be formatted in
         // the week view. This is optional.
         setupDateTimeInterpreter(false);
+
+        // init BTLE
+        bluetoothAdapter = ((android.bluetooth.BluetoothManager)getSystemService(BLUETOOTH_SERVICE)).getAdapter();
+
+        /* btleFilter = new ArrayList<ScanFilter>();
+        btleFilter.add( new ScanFilter.Builder().setManufacturerData(0x4343,null).build() );
+        btleSettings = new ScanSettings.Builder().setReportDelay(500).setScanMode(ScanSettings.SCAN_MODE_LOW_POWER).build(); */
+
+        btleScanner = bluetoothAdapter.getBluetoothLeScanner();
+        btleScanner.startScan( new myScanCallback() );
+        //btleScanner.startScan( btleFilter, btleSettings, new myScanCallback() );
+
+        btleAdvertiser = bluetoothAdapter.getBluetoothLeAdvertiser();
     }
 
 
