@@ -1,10 +1,20 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MyActivity"
     android:background="#fff">
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Broadcast free/busy information"
+        android:id="@+id/toggleButton"
+        android:textOn="Broadcast free/busy information"
+        android:textOff="Broadcast free/busy information"
+        android:onClick="onButtonToggle" />
 
     <com.alamkanak.weekview.WeekView
         android:id="@+id/weekView"
@@ -24,4 +34,4 @@
         app:headerColumnBackground="#ffffffff"
         app:todayHeaderTextColor="@color/accent"/>
 
-</RelativeLayout>
+</LinearLayout>

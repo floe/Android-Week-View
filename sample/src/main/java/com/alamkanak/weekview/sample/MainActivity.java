@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.alamkanak.weekview.DateTimeInterpreter;
@@ -20,6 +21,7 @@ import java.util.Locale;
 import android.bluetooth.*;
 import android.bluetooth.le.*;
 import android.util.Log;
+import android.widget.CheckBox;
 
 
 /**
@@ -159,6 +161,11 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         Log.d("BT", "scanning stopped");
     }
 
+    // callback for the toggle button
+    public void onButtonToggle(View view) {
+        CheckBox cb = (CheckBox)view;
+        Log.d("UI",String.format("button state: %b",cb.isChecked()));
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
