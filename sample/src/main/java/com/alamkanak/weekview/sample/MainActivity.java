@@ -39,6 +39,11 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothLeScanner btleScanner;
     private BluetoothLeAdvertiser btleAdvertiser;
+    private AdvertiseSettings btleAdvSettings;
+    private AdvertiseData btleAdvData1;
+    private AdvertiseData btleAdvData2;
+    private AdvertiseCallback btleAdvCallback;
+    private ScanCallback btleScanCallback;
     //private List<ScanFilter> btleFilter;
     //private ScanSettings btleSettings;
 
@@ -80,6 +85,15 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         }
     }
 
+    class myAdvertisingCallback extends AdvertiseCallback {
+        @Override public void onStartFailure(int errorCode) {
+            Log.d("BT", String.format("advertising failed: %d",errorCode));
+        }
+        @Override public void onStartSuccess(AdvertiseSettings settings) {
+            Log.d("BT", "advertising started");
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,11 +123,40 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         btleFilter.add( new ScanFilter.Builder().setManufacturerData(0x4343,null).build() );
         btleSettings = new ScanSettings.Builder().setReportDelay(500).setScanMode(ScanSettings.SCAN_MODE_LOW_POWER).build(); */
 
-        btleScanner = bluetoothAdapter.getBluetoothLeScanner();
-        btleScanner.startScan( new myScanCallback() );
-        //btleScanner.startScan( btleFilter, btleSettings, new myScanCallback() );
+        btleScanCallback = new myScanCallback();
 
+        btleScanner = bluetoothAdapter.getBluetoothLeScanner();
         btleAdvertiser = bluetoothAdapter.getBluetoothLeAdvertiser();
+
+        btleAdvSettings = new AdvertiseSettings.Builder().
+                setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_POWER).
+                setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_HIGH).
+                setConnectable(false).
+                setTimeout(0).
+                build();
+
+        byte[] rawAdvData = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07 };
+        btleAdvData1 = new AdvertiseData.Builder().setIncludeDeviceName(true).setIncludeTxPowerLevel(false).addManufacturerData(0x4343,rawAdvData).build();
+        btleAdvData2 = new AdvertiseData.Builder().setIncludeDeviceName(false).setIncludeTxPowerLevel(false).addManufacturerData(0x4343,rawAdvData).build();
+        btleAdvCallback = new myAdvertisingCallback();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        btleAdvertiser.startAdvertising(btleAdvSettings, btleAdvData1, btleAdvData2, btleAdvCallback);
+        btleScanner.startScan( btleScanCallback );
+        //btleScanner.startScan( btleFilter, btleSettings, new myScanCallback() );
+        Log.d("BT", "scanning started");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        btleAdvertiser.stopAdvertising(btleAdvCallback);
+        Log.d("BT", "advertising stopped");
+        btleScanner.stopScan(btleScanCallback);
+        Log.d("BT", "scanning stopped");
     }
 
 
