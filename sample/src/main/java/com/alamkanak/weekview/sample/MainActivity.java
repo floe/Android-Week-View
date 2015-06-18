@@ -49,6 +49,31 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     //private List<ScanFilter> btleFilter;
     //private ScanSettings btleSettings;
 
+    void parse_calendar_cast(int[] raw) {
+
+        if (raw.length < 5) return;
+
+        int start_date   = (raw[0] << 8) | raw[1];                 // days since 1970-01-01
+        int start_hour   = raw[3] & 0x1F;                          // first hour of each day
+        int end_hour     = (raw[3] >> 5) | ((raw[2] & 0x03) << 3); // last hour of each day
+        int slot_length  = (raw[2] >> 2) & 0x03;                   // slot duration (0 = 15 min, 1 = 30 min, 2 = 1h)
+        int inc_saturday = (raw[2] >> 4) & 0x01;                   // include saturdays
+        int inc_sunday   = (raw[2] >> 5) & 0x01;                   // include sundays
+
+        Calendar start = Calendar.getInstance();
+        start.setTimeInMillis( 24*60*60*1000*(long)start_date );
+        start.set(Calendar.HOUR_OF_DAY, start_hour);
+
+        Calendar end = (Calendar)start.clone();
+        end.set( Calendar.HOUR_OF_DAY, end_hour );
+
+        Log.d("BT","Start: "+start.getTime()+" End: "+end.getTime()+String.format(" slot length: %d Sat: %d Sun: %d", slot_length, inc_saturday, inc_sunday));
+
+        for (int i = 4; i < raw.length; i++) {
+
+        }
+    }
+
     class myScanCallback extends ScanCallback {
         @Override public void onScanResult(int callbackType, ScanResult result) {
 
@@ -75,12 +100,19 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
 
                 // Log raw data for debugging
                 StringBuilder sb = new StringBuilder();
-                for (Byte b: map) sb.append(String.format("%02X ",b.byteValue()));
+                int[] tmp = new int[map.size()];
+                int i = 0;
+                for (Byte b : map) {
+                    sb.append(String.format("%02X ", b.byteValue()));
+                    tmp[i++] = b.byteValue() & 0xFF;
+                }
                 Log.d("BT",String.format("length: %d, data: ",map.size()) + sb.toString());
 
                 // TODO: parse map
+                parse_calendar_cast(tmp);
             }
         }
+
         @Override public void onBatchScanResults(List<ScanResult> results) {
             for (ScanResult sr: results)
                 onScanResult(0, sr);
