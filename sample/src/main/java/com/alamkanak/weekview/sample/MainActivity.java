@@ -128,6 +128,8 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
                 Log.d("BT","got CC broadcast from "+addr);
                 if (btleEvents.containsKey(addr)) return;
 
+                Toast.makeText(MainActivity.this, "Received new CalendarCast from " + result.getDevice().getName(), Toast.LENGTH_LONG).show();
+
                 // get raw data - need to parse on our own
                 data = result.getScanRecord().getBytes();
                 ArrayList<Byte> map = new ArrayList<Byte>();
