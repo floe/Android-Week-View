@@ -16,8 +16,11 @@ import com.alamkanak.weekview.WeekViewEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+
 import android.bluetooth.*;
 import android.bluetooth.le.*;
 import android.util.Log;
@@ -48,15 +51,23 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     private ScanCallback btleScanCallback;
     //private List<ScanFilter> btleFilter;
     //private ScanSettings btleSettings;
+    private Set<String> btleDevices;
 
-    void parse_calendar_cast(int[] raw) {
+    // Calendar stuff
+    private static int event_id = 0;
+    private List<WeekViewEvent> event_list;
 
-        if (raw.length < 5) return;
+
+    List<WeekViewEvent> parse_calendar_cast(int[] raw) {
+
+        List<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
+
+        if (raw.length < 5) return null;
 
         int start_date   = (raw[0] << 8) | raw[1];                 // days since 1970-01-01
         int start_hour   = raw[3] & 0x1F;                          // first hour of each day
         int end_hour     = (raw[3] >> 5) | ((raw[2] & 0x03) << 3); // last hour of each day
-        int slot_length  = (raw[2] >> 2) & 0x03;                   // slot duration (0 = 15 min, 1 = 30 min, 2 = 1h)
+        int slot_length  = (raw[2] >> 2) & 0x03;                   // slot duration (0 = 15 min, 1 = 30 min, 2 = 45 min, 3 = 1h)
         int inc_saturday = (raw[2] >> 4) & 0x01;                   // include saturdays
         int inc_sunday   = (raw[2] >> 5) & 0x01;                   // include sundays
 
@@ -69,9 +80,41 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
 
         Log.d("BT","Start: "+start.getTime()+" End: "+end.getTime()+String.format(" slot length: %d Sat: %d Sun: %d", slot_length, inc_saturday, inc_sunday));
 
-        for (int i = 4; i < raw.length; i++) {
+        // convert to minutes
+        slot_length = (slot_length+1)*15;
+        int slot_duration = 0;
 
+        // start at 5th byte = 32nd bit
+        int i = 4*8;
+        int tmp = 0;
+
+        Calendar current_start = null;
+
+        while (i < raw.length*8) {
+            if (i%8 == 0) tmp = raw[i/8];
+            if (((tmp >> i%8) & 0x01) == 0) {
+                // slot has finished, insert event now
+                if (slot_duration != 0) {
+                    Calendar current_end = (Calendar)current_start.clone();
+                    current_end.add(Calendar.MILLISECOND, slot_duration*60*1000);
+                    Log.d("BT","Adding event: from "+current_start.getTime()+" to "+current_end.getTime());
+                    WeekViewEvent event = new WeekViewEvent(event_id++, "", current_start, current_end);
+                    event.setColor(getResources().getColor(R.color.event_color_02));
+                    events.add(event);
+                }
+                slot_duration = 0;
+            } else {
+                // new slot has started, set start date/time
+                if (slot_duration == 0) {
+                    current_start = (Calendar)start.clone();
+                    current_start.add(Calendar.MILLISECOND, slot_length*60*1000 * (i - 4*8) );
+                }
+                slot_duration += slot_length;
+            }
+            i++;
         }
+
+        return events;
     }
 
     class myScanCallback extends ScanCallback {
@@ -80,6 +123,11 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
             // check if MSD with ID "CC" is available
             byte[] data = result.getScanRecord().getManufacturerSpecificData(0x4343);
             if (data != null) {
+
+                String addr = result.getDevice().getAddress();
+                Log.d("BT","got CC broadcast from "+addr);
+                if (btleDevices.contains(addr)) return;
+                btleDevices.add(addr);
 
                 // get raw data - need to parse on our own
                 data = result.getScanRecord().getBytes();
@@ -109,7 +157,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
                 Log.d("BT",String.format("length: %d, data: ",map.size()) + sb.toString());
 
                 // TODO: parse map
-                parse_calendar_cast(tmp);
+                event_list = parse_calendar_cast(tmp);
             }
         }
 
@@ -173,6 +221,8 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         btleAdvData1 = new AdvertiseData.Builder().setIncludeDeviceName(true).setIncludeTxPowerLevel(false).addManufacturerData(0x4343,rawAdvData).build();
         btleAdvData2 = new AdvertiseData.Builder().setIncludeDeviceName(false).setIncludeTxPowerLevel(false).addManufacturerData(0x4343,rawAdvData).build();
         btleAdvCallback = new myAdvertisingCallback();
+
+        btleDevices = new HashSet<String>();
     }
 
     @Override
