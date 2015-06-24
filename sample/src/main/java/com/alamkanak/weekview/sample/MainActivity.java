@@ -16,9 +16,11 @@ import com.alamkanak.weekview.WeekViewEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import android.bluetooth.*;
@@ -51,12 +53,10 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     private ScanCallback btleScanCallback;
     //private List<ScanFilter> btleFilter;
     //private ScanSettings btleSettings;
-    private Set<String> btleDevices;
 
     // Calendar stuff
     private static int event_id = 0;
-    private List<WeekViewEvent> event_list;
-
+    private Map<String,List<WeekViewEvent>> btleEvents;
 
     List<WeekViewEvent> parse_calendar_cast(int[] raw) {
 
@@ -99,7 +99,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
                     current_end.add(Calendar.MILLISECOND, slot_duration*60*1000);
                     Log.d("BT","Adding event: from "+current_start.getTime()+" to "+current_end.getTime());
                     WeekViewEvent event = new WeekViewEvent(event_id++, "", current_start, current_end);
-                    event.setColor(getResources().getColor(R.color.event_color_02));
+                    event.setColor(getResources().getColor(R.color.blocked_color));
                     events.add(event);
                 }
                 slot_duration = 0;
@@ -126,8 +126,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
 
                 String addr = result.getDevice().getAddress();
                 Log.d("BT","got CC broadcast from "+addr);
-                if (btleDevices.contains(addr)) return;
-                btleDevices.add(addr);
+                if (btleEvents.containsKey(addr)) return;
 
                 // get raw data - need to parse on our own
                 data = result.getScanRecord().getBytes();
@@ -156,8 +155,8 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
                 }
                 Log.d("BT",String.format("length: %d, data: ",map.size()) + sb.toString());
 
-                // TODO: parse map
-                event_list = parse_calendar_cast(tmp);
+                btleEvents.put(addr, parse_calendar_cast(tmp));
+                mWeekView.notifyDatasetChanged();
             }
         }
 
@@ -222,7 +221,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         btleAdvData2 = new AdvertiseData.Builder().setIncludeDeviceName(false).setIncludeTxPowerLevel(false).addManufacturerData(0x4343,rawAdvData).build();
         btleAdvCallback = new myAdvertisingCallback();
 
-        btleDevices = new HashSet<String>();
+        btleEvents = new HashMap<String,List<WeekViewEvent>>();
     }
 
     @Override
@@ -435,6 +434,9 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         event = new WeekViewEvent(5, getEventTitle(startTime), startTime, endTime);
         event.setColor(getResources().getColor(R.color.event_color_02));
         events.add(event);
+
+        for (Map.Entry<String,List<WeekViewEvent>> event_list: btleEvents.entrySet())
+            events.addAll(0,event_list.getValue());
 
         return events;
     }
