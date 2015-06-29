@@ -55,7 +55,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     //private ScanSettings btleSettings;
 
     // Calendar stuff
-    private static int event_id = 0;
+    //private static int event_id = 0;
     private Map<String,List<WeekViewEvent>> btleEvents;
 
     List<WeekViewEvent> parse_calendar_cast(int[] raw) {
@@ -82,23 +82,28 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
 
         // convert to minutes
         slot_length = (slot_length+1)*15;
+        int slots_per_day = (end_hour - start_hour) * 60 / slot_length;
+        int ignored_slots = (24*60 / slot_length) - slots_per_day;
+        int current_day = 0;
         int slot_duration = 0;
 
-        // start at 5th byte = 32nd bit
-        int i = 4*8;
+        Log.d("BT",String.format("slot_length: %d, slots_per_day: %d, ignored_slots: %d",slot_length,slots_per_day,ignored_slots));
+
+        // current bit offset (+ 4*8 bits header)
+        int i = 0;
         int tmp = 0;
 
         Calendar current_start = null;
 
-        while (i < raw.length*8) {
-            if (i%8 == 0) tmp = raw[i/8];
+        while (i < (raw.length-4)*8) {
+            if (i%8 == 0) tmp = raw[4+(i/8)];
             if (((tmp >> i%8) & 0x01) == 0) {
                 // slot has finished, insert event now
                 if (slot_duration != 0) {
                     Calendar current_end = (Calendar)current_start.clone();
                     current_end.add(Calendar.MILLISECOND, slot_duration*60*1000);
                     Log.d("BT","Adding event: from "+current_start.getTime()+" to "+current_end.getTime());
-                    WeekViewEvent event = new WeekViewEvent(event_id++, "", current_start, current_end);
+                    WeekViewEvent event = new WeekViewEvent(0x4242, "", current_start, current_end);
                     event.setColor(getResources().getColor(R.color.blocked_color));
                     events.add(event);
                 }
@@ -107,11 +112,12 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
                 // new slot has started, set start date/time
                 if (slot_duration == 0) {
                     current_start = (Calendar)start.clone();
-                    current_start.add(Calendar.MILLISECOND, slot_length*60*1000 * (i - 4*8) );
+                    current_start.add(Calendar.MILLISECOND, (i + current_day*ignored_slots) * slot_length * 60*1000 );
                 }
                 slot_duration += slot_length;
             }
             i++;
+            if (i%slots_per_day == 0) current_day++;
         }
 
         return events;
@@ -248,6 +254,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     public void onButtonToggle(View view) {
         CheckBox cb = (CheckBox)view;
         Log.d("UI",String.format("button state: %b",cb.isChecked()));
+        // TODO: enable broadcast
     }
 
     @Override
