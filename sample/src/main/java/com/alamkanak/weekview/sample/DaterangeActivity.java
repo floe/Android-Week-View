@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import java.util.GregorianCalendar;
 import com.alamkanak.weekview.sample.R;
@@ -19,6 +20,8 @@ public class DaterangeActivity extends Activity {
 
         TimePicker tp1 = (TimePicker)findViewById(R.id.timepicker ); tp1.setIs24HourView(true); tp1.setCurrentHour( 8); tp1.setCurrentMinute(0);
         TimePicker tp2 = (TimePicker)findViewById(R.id.timepicker2); tp2.setIs24HourView(true); tp2.setCurrentHour(18); tp2.setCurrentMinute(0);
+
+        RadioGroup rg = (RadioGroup)findViewById(R.id.radiogroup); rg.check(R.id.radioButton2);
     }
 
     public void onOK(View view) {

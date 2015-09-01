@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.alamkanak.weekview.DateTimeInterpreter;
@@ -251,6 +252,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     }
 
     public void startBTLE() {
+        ((Switch)findViewById(R.id.toggleButton)).setChecked(true);
         btleAdvertiser.startAdvertising(btleAdvSettings, btleAdvData1, btleAdvData2, btleAdvCallback);
         btleScanner.startScan(btleScanCallback);
         //btleScanner.startScan( btleFilter, btleSettings, new myScanCallback() );
@@ -258,7 +260,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     }
 
     public void stopBTLE() {
-        ((CheckBox)findViewById(R.id.toggleButton)).setChecked(false);
+        ((Switch)findViewById(R.id.toggleButton)).setChecked(false);
         if (btleAdvertiser != null) btleAdvertiser.stopAdvertising(btleAdvCallback);
         Log.d("BT", "advertising stopped");
         if (btleScanner != null) btleScanner.stopScan(btleScanCallback);
@@ -288,7 +290,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
 
     // callback for the toggle button
     public void onButtonToggle(View view) {
-        CheckBox cb = (CheckBox)view;
+        Switch cb = (Switch)view;
         Log.d("UI",String.format("button state: %b",cb.isChecked()));
         if (cb.isChecked()) {
             Intent intent = new Intent(this, DaterangeActivity.class);

@@ -16,11 +16,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Select start date:"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Select earliest date:"
+        android:textColor="#000000"
         android:id="@+id/textView"
         android:layout_weight="1"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="left" />
 
     <com.alamkanak.weekview.sample.CustomDatePicker
         android:layout_width="wrap_content"
@@ -32,10 +33,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Select start hour:"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Select earliest time of day:"
+        android:textColor="#000000"
         android:id="@+id/textView2"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="left"
         android:layout_weight="1" />
 
     <TimePicker
@@ -48,10 +50,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Select end hour:"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#000000"
+        android:text="Select latest time of day:"
         android:id="@+id/textView3"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="left"
         android:layout_weight="1" />
 
     <TimePicker
@@ -61,7 +64,62 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="1" />
 
-    <Button
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#000000"
+        android:text="Select timeslot duration:"
+        android:id="@+id/textView4"
+        android:layout_weight="1"
+        android:layout_gravity="left" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:baselineAligned="false"
+        android:id="@+id/radiogroup"
+        android:measureWithLargestChild="false">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15 minutes"
+            android:id="@+id/radioButton"
+            android:layout_gravity="left" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30 minutes"
+            android:id="@+id/radioButton2"
+            android:layout_gravity="left" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="60 minutes"
+            android:id="@+id/radioButton3"
+            android:layout_gravity="left" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="120 minutes"
+            android:id="@+id/radioButton4"
+            android:layout_gravity="left" />
+    </RadioGroup>
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Include weekends"
+        android:id="@+id/weekends"
+        />
+
+     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onOK"
