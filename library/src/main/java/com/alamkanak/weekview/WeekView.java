@@ -264,7 +264,10 @@ public class WeekView extends View {
     private void init() {
         // Get the date today.
         mToday = Calendar.getInstance();
-        mToday.set(Calendar.HOUR_OF_DAY, 0);
+        mToday.set(Calendar.YEAR, 2015);
+        mToday.set(Calendar.MONTH, 9);
+        mToday.set(Calendar.DAY_OF_MONTH, 5);
+        mToday.set(Calendar.HOUR_OF_DAY, 8);
         mToday.set(Calendar.MINUTE, 0);
         mToday.set(Calendar.SECOND, 0);
 
