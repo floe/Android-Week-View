@@ -1,10 +1,13 @@
 package com.alamkanak.weekview.sample;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TimePicker;
 
 import com.alamkanak.weekview.sample.R;
 
@@ -14,28 +17,20 @@ public class DaterangeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daterange);
+
+        ((TimePicker)findViewById(R.id.timepicker )).setIs24HourView(true);
+        ((TimePicker)findViewById(R.id.timepicker2)).setIs24HourView(true);
     }
 
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_daterange, menu);
-        return true;
+    public void onOK(View view) {
+        Intent result = new Intent();
+        setResult(Activity.RESULT_OK, result);
+        finish();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
+    public void onCancel(View view) {
+        setResult(Activity.RESULT_CANCELED);
+        finish();
+    }
 
 }

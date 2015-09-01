@@ -38,13 +38,12 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="1" />
 
-    <Spinner
-        android:layout_width="match_parent"
+    <TimePicker
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner"
+        android:id="@+id/timepicker"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1"
-        android:spinnerMode="dialog" />
+        android:layout_weight="1"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -55,22 +54,24 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="1" />
 
-    <Spinner
-        android:layout_width="match_parent"
+    <TimePicker
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner2"
+        android:id="@+id/timepicker2"
         android:layout_gravity="center_horizontal"
         android:layout_weight="1" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="onOK"
         android:text="OK"
         />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="onCancel"
         android:text="Cancel"
         />
 

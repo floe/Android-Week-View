@@ -224,11 +224,16 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         btleFilter.add( new ScanFilter.Builder().setManufacturerData(0x4343,null).build() );
         btleSettings = new ScanSettings.Builder().setReportDelay(500).setScanMode(ScanSettings.SCAN_MODE_LOW_POWER).build(); */
 
-        btleScanCallback = new myScanCallback();
-
         btleScanner = bluetoothAdapter.getBluetoothLeScanner();
         btleAdvertiser = bluetoothAdapter.getBluetoothLeAdvertiser();
 
+        btleScanCallback = new myScanCallback();
+        btleAdvCallback = new myAdvertisingCallback();
+
+        btleEvents = new HashMap<String,List<WeekViewEvent>>();
+    }
+
+    public void setupAdvertising() {
         btleAdvSettings = new AdvertiseSettings.Builder().
                 setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_POWER).
                 setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_HIGH).
@@ -236,12 +241,31 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
                 setTimeout(0).
                 build();
 
+        // TODO: build from calendar data
         byte[] rawAdvData = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07 };
         btleAdvData1 = new AdvertiseData.Builder().setIncludeDeviceName(true).setIncludeTxPowerLevel(false).addManufacturerData(0x4343,rawAdvData).build();
         btleAdvData2 = new AdvertiseData.Builder().setIncludeDeviceName(false).setIncludeTxPowerLevel(false).addManufacturerData(0x4343,rawAdvData).build();
-        btleAdvCallback = new myAdvertisingCallback();
+    }
 
-        btleEvents = new HashMap<String,List<WeekViewEvent>>();
+    public void startBTLE() {
+        setupAdvertising();
+        btleAdvertiser.startAdvertising(btleAdvSettings, btleAdvData1, btleAdvData2, btleAdvCallback);
+        btleScanner.startScan( btleScanCallback );
+        //btleScanner.startScan( btleFilter, btleSettings, new myScanCallback() );
+        Log.d("BT", "scanning started");
+    }
+
+    public void stopBTLE() {
+        if (btleAdvertiser != null) btleAdvertiser.stopAdvertising(btleAdvCallback);
+        Log.d("BT", "advertising stopped");
+        if (btleScanner != null) btleScanner.stopScan(btleScanCallback);
+        Log.d("BT", "scanning stopped");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopBTLE();
     }
 
     @Override
@@ -258,18 +282,10 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         Log.d("UI",String.format("button state: %b",cb.isChecked()));
         // TODO: enable broadcast
         if (cb.isChecked()) {
-            /*btleAdvertiser.startAdvertising(btleAdvSettings, btleAdvData1, btleAdvData2, btleAdvCallback);
-            btleScanner.startScan( btleScanCallback );
-            //btleScanner.startScan( btleFilter, btleSettings, new myScanCallback() );
-            Log.d("BT", "scanning started");*/
-            //showDialog();
             Intent intent = new Intent(this, DaterangeActivity.class);
             startActivityForResult(intent, PICK_DATE_RANGE);
         } else {
-            btleAdvertiser.stopAdvertising(btleAdvCallback);
-            Log.d("BT", "advertising stopped");
-            btleScanner.stopScan(btleScanCallback);
-            Log.d("BT", "scanning stopped");
+            stopBTLE();
         }
     }
 
