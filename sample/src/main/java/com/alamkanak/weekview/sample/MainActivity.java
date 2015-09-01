@@ -24,9 +24,11 @@ import com.alamkanak.weekview.DateTimeInterpreter;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -233,7 +235,8 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         btleEvents = new HashMap<String,List<WeekViewEvent>>();
     }
 
-    public void setupAdvertising() {
+    public void setupAdvertising( Calendar startdate, int starttime, int endtime, int flags ) {
+        Log.d("Intent",startdate.toString());
         btleAdvSettings = new AdvertiseSettings.Builder().
                 setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_POWER).
                 setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_HIGH).
@@ -248,7 +251,6 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     }
 
     public void startBTLE() {
-        setupAdvertising();
         btleAdvertiser.startAdvertising(btleAdvSettings, btleAdvData1, btleAdvData2, btleAdvCallback);
         btleScanner.startScan( btleScanCallback );
         //btleScanner.startScan( btleFilter, btleSettings, new myScanCallback() );
@@ -272,7 +274,10 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // If the request went well (OK) and the request was PICK_DATE_RANGE
         if (resultCode == Activity.RESULT_OK && requestCode == PICK_DATE_RANGE) {
-            // ...
+            Log.d("Intent", data.getLongExtra("startdate",0) + " " + data.getIntExtra("starttime",0) + " " + data.getIntExtra("endtime",0));
+            Calendar startdate = Calendar.getInstance();
+            startdate.setTimeInMillis(data.getLongExtra("startdate",0));
+            setupAdvertising( startdate, data.getIntExtra("starttime",480), data.getIntExtra("endtime",1080), data.getIntExtra("flags",0) );
         }
     }
 

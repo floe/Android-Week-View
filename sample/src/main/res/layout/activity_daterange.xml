@@ -22,7 +22,7 @@
         android:layout_weight="1"
         android:layout_gravity="center_horizontal" />
 
-    <DatePicker
+    <com.alamkanak.weekview.sample.CustomDatePicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/datePicker"
