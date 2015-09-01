@@ -252,12 +252,13 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
 
     public void startBTLE() {
         btleAdvertiser.startAdvertising(btleAdvSettings, btleAdvData1, btleAdvData2, btleAdvCallback);
-        btleScanner.startScan( btleScanCallback );
+        btleScanner.startScan(btleScanCallback);
         //btleScanner.startScan( btleFilter, btleSettings, new myScanCallback() );
         Log.d("BT", "scanning started");
     }
 
     public void stopBTLE() {
+        ((CheckBox)findViewById(R.id.toggleButton)).setChecked(false);
         if (btleAdvertiser != null) btleAdvertiser.stopAdvertising(btleAdvCallback);
         Log.d("BT", "advertising stopped");
         if (btleScanner != null) btleScanner.stopScan(btleScanCallback);
@@ -272,20 +273,23 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // If the request went well (OK) and the request was PICK_DATE_RANGE
-        if (resultCode == Activity.RESULT_OK && requestCode == PICK_DATE_RANGE) {
-            Log.d("Intent", data.getLongExtra("startdate",0) + " " + data.getIntExtra("starttime",0) + " " + data.getIntExtra("endtime",0));
-            Calendar startdate = Calendar.getInstance();
-            startdate.setTimeInMillis(data.getLongExtra("startdate",0));
-            setupAdvertising( startdate, data.getIntExtra("starttime",480), data.getIntExtra("endtime",1080), data.getIntExtra("flags",0) );
+
+        if (resultCode != Activity.RESULT_OK || requestCode != PICK_DATE_RANGE) {
+            stopBTLE();
+            return;
         }
+
+        Log.d("Intent", data.getLongExtra("startdate",0) + " " + data.getIntExtra("starttime",0) + " " + data.getIntExtra("endtime",0));
+        Calendar startdate = Calendar.getInstance();
+        startdate.setTimeInMillis(data.getLongExtra("startdate",0));
+        setupAdvertising( startdate, data.getIntExtra("starttime",480), data.getIntExtra("endtime",1080), data.getIntExtra("flags",0) );
+        startBTLE();
     }
 
     // callback for the toggle button
     public void onButtonToggle(View view) {
         CheckBox cb = (CheckBox)view;
         Log.d("UI",String.format("button state: %b",cb.isChecked()));
-        // TODO: enable broadcast
         if (cb.isChecked()) {
             Intent intent = new Intent(this, DaterangeActivity.class);
             startActivityForResult(intent, PICK_DATE_RANGE);
