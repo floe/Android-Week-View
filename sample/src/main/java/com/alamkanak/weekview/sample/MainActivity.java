@@ -1,12 +1,23 @@
 package com.alamkanak.weekview.sample;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.alamkanak.weekview.DateTimeInterpreter;
@@ -39,6 +50,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     private static final int TYPE_DAY_VIEW = 1;
     private static final int TYPE_THREE_DAY_VIEW = 2;
     private static final int TYPE_WEEK_VIEW = 3;
+    private static final int PICK_DATE_RANGE = 0xF5C4;
     private int mWeekViewType = TYPE_THREE_DAY_VIEW;
     private WeekView mWeekView;
 
@@ -233,21 +245,11 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        btleAdvertiser.startAdvertising(btleAdvSettings, btleAdvData1, btleAdvData2, btleAdvCallback);
-        btleScanner.startScan( btleScanCallback );
-        //btleScanner.startScan( btleFilter, btleSettings, new myScanCallback() );
-        Log.d("BT", "scanning started");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        btleAdvertiser.stopAdvertising(btleAdvCallback);
-        Log.d("BT", "advertising stopped");
-        btleScanner.stopScan(btleScanCallback);
-        Log.d("BT", "scanning stopped");
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // If the request went well (OK) and the request was PICK_DATE_RANGE
+        if (resultCode == Activity.RESULT_OK && requestCode == PICK_DATE_RANGE) {
+            // ...
+        }
     }
 
     // callback for the toggle button
@@ -255,6 +257,20 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         CheckBox cb = (CheckBox)view;
         Log.d("UI",String.format("button state: %b",cb.isChecked()));
         // TODO: enable broadcast
+        if (cb.isChecked()) {
+            /*btleAdvertiser.startAdvertising(btleAdvSettings, btleAdvData1, btleAdvData2, btleAdvCallback);
+            btleScanner.startScan( btleScanCallback );
+            //btleScanner.startScan( btleFilter, btleSettings, new myScanCallback() );
+            Log.d("BT", "scanning started");*/
+            //showDialog();
+            Intent intent = new Intent(this, DaterangeActivity.class);
+            startActivityForResult(intent, PICK_DATE_RANGE);
+        } else {
+            btleAdvertiser.stopAdvertising(btleAdvCallback);
+            Log.d("BT", "advertising stopped");
+            btleScanner.stopScan(btleScanCallback);
+            Log.d("BT", "scanning stopped");
+        }
     }
 
     @Override
