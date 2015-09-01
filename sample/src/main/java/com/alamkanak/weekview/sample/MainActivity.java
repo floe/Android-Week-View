@@ -264,7 +264,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     }
 
     public void startBTLE() {
-        ((Switch)findViewById(R.id.toggleButton)).setChecked(true);
+        //((Switch)findViewById(R.id.toggleButton)).setChecked(true);
         btleAdvertiser.startAdvertising(btleAdvSettings, btleAdvData1, btleAdvData2, btleAdvCallback);
         btleScanner.startScan(btleScanCallback);
         //btleScanner.startScan( btleFilter, btleSettings, new myScanCallback() );
@@ -272,7 +272,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     }
 
     public void stopBTLE() {
-        ((Switch)findViewById(R.id.toggleButton)).setChecked(false);
+        //((Switch)findViewById(R.id.toggleButton)).setChecked(false);
         if (btleAdvertiser != null) btleAdvertiser.stopAdvertising(btleAdvCallback);
         Log.d("BT", "advertising stopped");
         if (btleScanner != null) btleScanner.stopScan(btleScanCallback);
@@ -393,7 +393,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
 
             @Override
             public String interpretTime(int hour) {
-                return hour > 11 ? (hour - 12) + " PM" : (hour == 0 ? "12 AM" : hour + " AM");
+                return String.format("%02d:00", hour);
             }
         });
     }
