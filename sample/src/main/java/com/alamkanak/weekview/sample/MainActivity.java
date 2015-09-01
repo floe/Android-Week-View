@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -224,6 +225,13 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         eventGenerator = new EventGenerator();
         mWeekView.goToHour(8.00);
 
+        Switch mySwitch = (Switch)findViewById(R.id.toggleButton);
+        mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                ((MainActivity)buttonView.getContext()).onButtonToggle(isChecked);
+            }
+        });
+
         // init BTLE
         bluetoothAdapter = ((android.bluetooth.BluetoothManager)getSystemService(BLUETOOTH_SERVICE)).getAdapter();
 
@@ -293,10 +301,9 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     }
 
     // callback for the toggle button
-    public void onButtonToggle(View view) {
-        Switch cb = (Switch)view;
-        Log.d("UI",String.format("button state: %b",cb.isChecked()));
-        if (cb.isChecked()) {
+    public void onButtonToggle(boolean isChecked) {
+        Log.d("UI", String.format("button state: %b", isChecked));
+        if (isChecked) {
             Intent intent = new Intent(this, DaterangeActivity.class);
             startActivityForResult(intent, PICK_DATE_RANGE);
         } else {

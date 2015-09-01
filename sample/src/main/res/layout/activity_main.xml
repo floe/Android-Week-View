@@ -13,8 +13,7 @@
         android:text="Broadcast free/busy information"
         android:id="@+id/toggleButton"
         android:textOn="Broadcast free/busy information"
-        android:textOff="Broadcast free/busy information"
-        android:onClick="onButtonToggle" />
+        android:textOff="Broadcast free/busy information" />
 
     <com.alamkanak.weekview.WeekView
         android:id="@+id/weekView"
