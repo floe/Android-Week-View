@@ -26,6 +26,9 @@ public class EventGenerator {
         return new ArrayList<>();
     }
 
+    // appointments are Oct 5 - Oct 9, Oct 12 - Oct 16
+    // none on weekends, time range is 9:00 - 18:00
+
     private ArrayList<WeekViewEvent> createListU2_2_3() {
 
         ArrayList<WeekViewEvent> events = new ArrayList<WeekViewEvent>();

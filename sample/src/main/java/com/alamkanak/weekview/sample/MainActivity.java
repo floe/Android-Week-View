@@ -72,6 +72,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     // Calendar stuff
     //private static int event_id = 0;
     private Map<String,List<WeekViewEvent>> btleEvents;
+    private EventGenerator eventGenerator;
 
     List<WeekViewEvent> parse_calendar_cast(int[] raw) {
 
@@ -220,6 +221,9 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         // the week view. This is optional.
         setupDateTimeInterpreter(false);
 
+        eventGenerator = new EventGenerator();
+        mWeekView.goToHour(8.00);
+
         // init BTLE
         bluetoothAdapter = ((android.bluetooth.BluetoothManager)getSystemService(BLUETOOTH_SERVICE)).getAdapter();
 
@@ -313,12 +317,14 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         switch (id){
             case R.id.action_today:
                 mWeekView.goToToday();
+                mWeekView.goToHour(8.00);
                 return true;
             case R.id.action_day_view:
                 if (mWeekViewType != TYPE_DAY_VIEW) {
                     item.setChecked(!item.isChecked());
                     mWeekViewType = TYPE_DAY_VIEW;
                     mWeekView.setNumberOfVisibleDays(1);
+                    mWeekView.goToHour(8.00);
 
                     // Lets change some dimensions to best fit the view.
                     mWeekView.setColumnGap((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics()));
@@ -331,6 +337,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
                     item.setChecked(!item.isChecked());
                     mWeekViewType = TYPE_THREE_DAY_VIEW;
                     mWeekView.setNumberOfVisibleDays(3);
+                    mWeekView.goToHour(8.00);
 
                     // Lets change some dimensions to best fit the view.
                     mWeekView.setColumnGap((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics()));
@@ -343,6 +350,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
                     item.setChecked(!item.isChecked());
                     mWeekViewType = TYPE_WEEK_VIEW;
                     mWeekView.setNumberOfVisibleDays(7);
+                    mWeekView.goToHour(8.00);
 
                     // Lets change some dimensions to best fit the view.
                     mWeekView.setColumnGap((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, getResources().getDisplayMetrics()));
@@ -386,10 +394,12 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     @Override
     public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
 
+        // TODO: auto-select colors, calendar fill
         // Populate the week view with some events.
-        List<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
+        List<WeekViewEvent> events = eventGenerator.getEvents(newYear, newMonth, 1,2);// new ArrayList<WeekViewEvent>();
+        Log.d("Cal","populating events; count = "+events.size());
 
-        Calendar startTime = Calendar.getInstance();
+        /*Calendar startTime = Calendar.getInstance();
         startTime.set(Calendar.HOUR_OF_DAY, 3);
         startTime.set(Calendar.MINUTE, 0);
         startTime.set(Calendar.MONTH, newMonth-1);
@@ -485,7 +495,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         endTime.add(Calendar.HOUR_OF_DAY, 3);
         event = new WeekViewEvent(5, getEventTitle(startTime), startTime, endTime);
         event.setColor(getResources().getColor(R.color.event_color_02));
-        events.add(event);
+        events.add(event);*/
 
         for (Map.Entry<String,List<WeekViewEvent>> event_list: btleEvents.entrySet())
             events.addAll(0,event_list.getValue());
@@ -493,7 +503,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         return events;
     }
 
-    private String getEventTitle(Calendar time) {
+    public static String getEventTitle(Calendar time) {
         return String.format("Event of %02d:%02d %s/%d", time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), time.get(Calendar.MONTH)+1, time.get(Calendar.DAY_OF_MONTH));
     }
 
