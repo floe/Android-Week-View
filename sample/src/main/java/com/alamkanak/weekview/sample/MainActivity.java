@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.RectF;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.telephony.TelephonyManager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -57,6 +59,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     private static final int PICK_DATE_RANGE = 0xF5C4;
     private int mWeekViewType = TYPE_THREE_DAY_VIEW;
     private WeekView mWeekView;
+    private String uid;
 
     // BTLE stuff
     private BluetoothAdapter bluetoothAdapter;
@@ -159,7 +162,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
                 int index = 0;
 
                 // search for MSD blocks (type = 0xFF) and append raw data to ArrayList
-                while (index < data.length) {
+                while (index < data.length-1) {
                     byte len  = data[index];
                     byte type = data[index+1];
                     if (type == (byte)0xFF)
@@ -232,6 +235,10 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
             }
         });
 
+        // get UID for differentiating devices (last digit == 0?)
+        uid = ((TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+        Log.d("Core", "UID = " + uid);
+
         // init BTLE
         bluetoothAdapter = ((android.bluetooth.BluetoothManager)getSystemService(BLUETOOTH_SERVICE)).getAdapter();
 
@@ -258,9 +265,13 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
                 build();
 
         // TODO: build from calendar data
-        byte[] rawAdvData = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07 };
-        btleAdvData1 = new AdvertiseData.Builder().setIncludeDeviceName(true).setIncludeTxPowerLevel(false).addManufacturerData(0x4343,rawAdvData).build();
-        btleAdvData2 = new AdvertiseData.Builder().setIncludeDeviceName(false).setIncludeTxPowerLevel(false).addManufacturerData(0x4343,rawAdvData).build();
+        byte[] rawAdvData1 = {
+                0x41, 0x49, // 16713 days since 1970-01-01 = 2015-10-05
+                0x16, 0x49, // start at 9:00, end at 18:00, slot length 30 min, include saturdays
+                0x03, 0x04, 0x05, 0x06, 0x07 };
+        byte[] rawAdvData2 = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07 };
+        btleAdvData1 = new AdvertiseData.Builder().setIncludeDeviceName( true).setIncludeTxPowerLevel(false).addManufacturerData(0x4343,rawAdvData1).build();
+        btleAdvData2 = new AdvertiseData.Builder().setIncludeDeviceName(false).setIncludeTxPowerLevel(false).addManufacturerData(0x4343,rawAdvData2).build();
     }
 
     public void startBTLE() {
@@ -401,9 +412,11 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     @Override
     public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
 
-        // TODO: auto-select colors, calendar fill
+        // TODO: auto-select fill level
+        int user = (uid.endsWith("0")) ? 1 : 2;
+
         // Populate the week view with some events.
-        List<WeekViewEvent> events = eventGenerator.getEvents(newYear, newMonth, 1,2);// new ArrayList<WeekViewEvent>();
+        List<WeekViewEvent> events = eventGenerator.getEvents(newYear, newMonth, user, 2);
         Log.d("Cal","populating events; count = "+events.size());
 
         /*Calendar startTime = Calendar.getInstance();
