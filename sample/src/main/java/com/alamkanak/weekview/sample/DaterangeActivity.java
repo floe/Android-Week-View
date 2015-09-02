@@ -23,6 +23,9 @@ public class DaterangeActivity extends Activity {
 
         RadioGroup rg = (RadioGroup)findViewById(R.id.radiogroup); rg.check(R.id.radioButton2);
         DatePicker dp  = (DatePicker)findViewById(R.id.datePicker); dp.updateDate(2015,9,5);
+
+        // skip the activity, immediately return with default values
+        onOK((View)rg);
     }
 
     public void onOK(View view) {
