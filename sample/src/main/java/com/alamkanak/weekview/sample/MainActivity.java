@@ -31,6 +31,7 @@ import com.alamkanak.weekview.WeekViewEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -267,11 +268,20 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         // TODO: build from calendar data
 
         List<WeekViewEvent> events = getWeekViewEvents(startdate.get(Calendar.YEAR), startdate.get(Calendar.MONTH));
-        byte[] rawAdvData1 = {
+        byte[] rawAdvData = {
                 0x41, 0x49, // 16713 days since 1970-01-01 = 2015-10-05
-                0x16, 0x49, // start at 9:00, end at 18:00, slot length 30 min, include saturdays
-                0x03, 0x04, 0x05, 0x06, 0x07 };
-        byte[] rawAdvData2 = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07 };
+                0x06, 0x49, // start at 9:00, end at 18:00, slot length 30 min, no saturdays/sundays
+                0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10,
+                0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18 };
+
+        WeekViewEvent prev = new WeekViewEvent(123,"",startdate,startdate);
+        for (WeekViewEvent event: events) {
+
+        }
+
+        byte[] rawAdvData1 = Arrays.copyOfRange(rawAdvData, 0,16);
+        byte[] rawAdvData2 = Arrays.copyOfRange(rawAdvData,16,40);
+
         btleAdvData1 = new AdvertiseData.Builder().setIncludeDeviceName( true).setIncludeTxPowerLevel(false).addManufacturerData(0x4343,rawAdvData1).build();
         btleAdvData2 = new AdvertiseData.Builder().setIncludeDeviceName(false).setIncludeTxPowerLevel(false).addManufacturerData(0x4343,rawAdvData2).build();
     }
