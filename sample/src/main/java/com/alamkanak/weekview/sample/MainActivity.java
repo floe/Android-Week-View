@@ -410,14 +410,15 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         });
     }
 
+    public int getFillLevel() { return 1; }
+
     @Override
     public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
 
-        // TODO: auto-select fill level
         int user = (uid.endsWith("0")) ? 1 : 2;
 
         // Populate the week view with some events.
-        List<WeekViewEvent> events = eventGenerator.getEvents(newYear, newMonth, user, 2);
+        List<WeekViewEvent> events = eventGenerator.getEvents(newYear, newMonth, user, getFillLevel());
         Log.d("Cal","populating events; count = "+events.size());
 
         /*Calendar startTime = Calendar.getInstance();
