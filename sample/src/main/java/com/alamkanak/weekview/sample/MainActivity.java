@@ -265,6 +265,8 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
                 build();
 
         // TODO: build from calendar data
+
+        List<WeekViewEvent> events = getWeekViewEvents(startdate.get(Calendar.YEAR), startdate.get(Calendar.MONTH));
         byte[] rawAdvData1 = {
                 0x41, 0x49, // 16713 days since 1970-01-01 = 2015-10-05
                 0x16, 0x49, // start at 9:00, end at 18:00, slot length 30 min, include saturdays
@@ -415,15 +417,19 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     @Override
     public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
 
-        int user = (uid.endsWith("0")) ? 1 : 2;
-
-        // Populate the week view with some events.
-        List<WeekViewEvent> events = eventGenerator.getEvents(newYear, newMonth, user, getFillLevel());
-        Log.d("Cal","populating events; count = "+events.size());
+        List<WeekViewEvent> events = getWeekViewEvents(newYear, newMonth);
 
         for (Map.Entry<String,List<WeekViewEvent>> event_list: btleEvents.entrySet())
             events.addAll(0,event_list.getValue());
 
+        return events;
+    }
+
+    private List<WeekViewEvent> getWeekViewEvents(int newYear, int newMonth) {
+        int user = (uid.endsWith("0")) ? 1 : 2;
+
+        // Populate the week view with some events.
+        List<WeekViewEvent> events = eventGenerator.getEvents(newYear, newMonth, user, getFillLevel());
         return events;
     }
 
