@@ -29,6 +29,7 @@ public class EventGenerator {
     // appointments are Oct 5 - Oct 9, Oct 12 - Oct 16
     // none on weekends, time range is 9:00 - 18:00
 
+    // checked
     private ArrayList<WeekViewEvent> createListU2_2_3() {
 
         ArrayList<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
@@ -53,9 +54,9 @@ public class EventGenerator {
         
         //05.10.2015 15:30-18:00
         startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 15);
-        startTime.set(Calendar.HOUR_OF_DAY, 30);
-        startTime.set(Calendar.MINUTE, 0);
+        startTime.set(Calendar.DAY_OF_MONTH, 5);
+        startTime.set(Calendar.HOUR_OF_DAY, 15);
+        startTime.set(Calendar.MINUTE, 30);
         startTime.set(Calendar.MONTH, newMonth-1);
         startTime.set(Calendar.YEAR, newYear);
         endTime = (Calendar) startTime.clone();
@@ -163,7 +164,7 @@ public class EventGenerator {
         event.setColor(color);
         events.add(event);
         
-        //09.10.2015 10:00-12:00
+        //09.10.2015 10:00-12:30
         startTime = Calendar.getInstance();
         startTime.set(Calendar.DAY_OF_MONTH, 9);
         startTime.set(Calendar.HOUR_OF_DAY, 10);
@@ -172,7 +173,7 @@ public class EventGenerator {
         startTime.set(Calendar.YEAR, newYear);
         endTime = (Calendar) startTime.clone();
         endTime.set(Calendar.HOUR_OF_DAY, 12);
-        endTime.set(Calendar.MINUTE, 0);
+        endTime.set(Calendar.MINUTE, 30);
         event = new WeekViewEvent(10,MainActivity.getEventTitle(startTime), startTime, endTime);
         event.setColor(color);
         events.add(event);
@@ -334,6 +335,7 @@ public class EventGenerator {
         return events;
     }
 
+    // checked
     private ArrayList<WeekViewEvent> createListU2_1_3() {
 
         ArrayList<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
@@ -358,9 +360,9 @@ public class EventGenerator {
         
         //05.10.2015 16:30-17:30
         startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 16);
-        startTime.set(Calendar.HOUR_OF_DAY, 30);
-        startTime.set(Calendar.MINUTE, 0);
+        startTime.set(Calendar.DAY_OF_MONTH, 5);
+        startTime.set(Calendar.HOUR_OF_DAY, 16);
+        startTime.set(Calendar.MINUTE, 30);
         startTime.set(Calendar.MONTH, newMonth-1);
         startTime.set(Calendar.YEAR, newYear);
         endTime = (Calendar) startTime.clone();
