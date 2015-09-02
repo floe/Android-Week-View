@@ -258,7 +258,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     public void setupAdvertising( Calendar startdate, int starttime, int endtime, int flags ) {
         Log.d("Intent",startdate.toString());
         btleAdvSettings = new AdvertiseSettings.Builder().
-                setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_POWER).
+                setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY).
                 setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_HIGH).
                 setConnectable(false).
                 setTimeout(0).
@@ -280,6 +280,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         btleScanner.startScan(btleScanCallback);
         //btleScanner.startScan( btleFilter, btleSettings, new myScanCallback() );
         Log.d("BT", "scanning started");
+        Toast.makeText(MainActivity.this, "CalendarCast started.", Toast.LENGTH_LONG).show();
     }
 
     public void stopBTLE() {
