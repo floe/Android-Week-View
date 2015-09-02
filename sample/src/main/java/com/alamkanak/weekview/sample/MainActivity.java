@@ -258,7 +258,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     public void setupAdvertising( Calendar startdate, int starttime, int endtime, int flags ) {
         Log.d("Intent",startdate.toString());
         btleAdvSettings = new AdvertiseSettings.Builder().
-                setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY).
+                setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED).
                 setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_HIGH).
                 setConnectable(false).
                 setTimeout(0).
