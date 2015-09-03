@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:icon="@drawable/ic_launcher"
+            android:icon="@drawable/ic_launcher1"
             android:label="CalendarCast (few events)" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +23,24 @@
             android:name=".MainActivity2"
             android:icon="@drawable/ic_launcher2"
             android:label="CalendarCast (many events)" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity3"
+            android:icon="@drawable/ic_launcher3"
+            android:label="CalendarCast (few events, flipped)" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity4"
+            android:icon="@drawable/ic_launcher4"
+            android:label="CalendarCast (many events, flipped)" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

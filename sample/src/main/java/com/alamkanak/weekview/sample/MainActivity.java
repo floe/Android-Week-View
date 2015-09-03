@@ -288,7 +288,6 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         int bit = 4*8;
         int slotlength = 30;
 
-        // TODO: correctly skip weekends/nights
         for (WeekViewEvent event: events) {
 
             // calculate difference between end of prev. event and current event
@@ -297,6 +296,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
             int slotcount = (int)(diff/(1000*60)) / slotlength;
 
             // set corresponding number of slot bits to zero (i.e. skip them)
+            // TODO: correctly skip weekends/nights
             bit += slotcount;
 
             //calculate length of current event
@@ -465,6 +465,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     }
 
     public int getFillLevel() { return 1; }
+    public boolean getFlipped() { return false; }
 
     @Override
     public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
@@ -481,7 +482,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         int user = (uid.endsWith("0")) ? 1 : 2;
 
         // Populate the week view with some events.
-        List<WeekViewEvent> events = eventGenerator.getEvents(newYear, newMonth, user, getFillLevel(),false);
+        List<WeekViewEvent> events = eventGenerator.getEvents(newYear, newMonth, user, getFillLevel(),getFlipped());
         return events;
     }
 
