@@ -46,7 +46,6 @@ import android.bluetooth.le.*;
 import android.util.Log;
 import android.widget.CheckBox;
 
-
 /**
  * Created by Raquib-ul-Alam Kanak on 7/21/2014.
  * Website: http://alamkanak.github.io/
@@ -78,6 +77,17 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
     //private static int event_id = 0;
     private Map<String,List<WeekViewEvent>> btleEvents;
     private EventGenerator eventGenerator;
+
+    final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
+    public static String bytesToHex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for ( int j = 0; j < bytes.length; j++ ) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = hexArray[v >>> 4];
+            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+        }
+        return new String(hexChars);
+    }
 
     List<WeekViewEvent> parse_calendar_cast(int[] raw) {
 
@@ -265,22 +275,52 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
                 setTimeout(0).
                 build();
 
-        // TODO: build from calendar data
+        List<WeekViewEvent> events = getWeekViewEvents(startdate.get(Calendar.YEAR), startdate.get(Calendar.MONTH)+1);
+        Log.d("BT","Event size: "+events.size());
 
-        List<WeekViewEvent> events = getWeekViewEvents(startdate.get(Calendar.YEAR), startdate.get(Calendar.MONTH));
         byte[] rawAdvData = {
                 0x41, 0x49, // 16713 days since 1970-01-01 = 2015-10-05
                 0x06, 0x49, // start at 9:00, end at 18:00, slot length 30 min, no saturdays/sundays
-                0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10,
-                0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18 };
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
         WeekViewEvent prev = new WeekViewEvent(123,"",startdate,startdate);
+        int bit = 4*8;
+        int slotlength = 30;
         for (WeekViewEvent event: events) {
 
+            // calculate difference between end of prev. event and current event
+            long diff = event.getStartTime().getTimeInMillis() - prev.getEndTime().getTimeInMillis();
+            if (diff < 0) continue;
+            int slotcount = (int)(diff/(1000*60)) / slotlength;
+
+            // set corresponding number of slot bits to zero (i.e. skip them)
+            bit += slotcount;
+
+            //calculate length of current event
+            diff = event.getEndTime().getTimeInMillis() - event.getStartTime().getTimeInMillis();
+            if (diff < 0) continue;
+            slotcount = (int)(diff/(1000*60)) / slotlength;
+
+            // set corresponding number of slot bits to one
+            for (int i = 0; i < slotcount; i++) {
+                int byteoffs = (bit+i)/8;
+                if (byteoffs > rawAdvData.length) break;
+                int bitoffs  = (bit+i)%8;
+                rawAdvData[byteoffs] |= (1 << bitoffs);
+            }
+            bit += slotcount;
+
+            // finish
+            prev = event;
+            if (bit >= rawAdvData.length*8) break;
         }
 
         byte[] rawAdvData1 = Arrays.copyOfRange(rawAdvData, 0,16);
         byte[] rawAdvData2 = Arrays.copyOfRange(rawAdvData,16,40);
+
+        Log.d("BT","Array 1: "+bytesToHex(rawAdvData1));
+        Log.d("BT","Array 2: "+bytesToHex(rawAdvData2));
 
         btleAdvData1 = new AdvertiseData.Builder().setIncludeDeviceName( true).setIncludeTxPowerLevel(false).addManufacturerData(0x4343,rawAdvData1).build();
         btleAdvData2 = new AdvertiseData.Builder().setIncludeDeviceName(false).setIncludeTxPowerLevel(false).addManufacturerData(0x4343,rawAdvData2).build();
@@ -319,7 +359,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
 
         Log.d("Intent", data.getLongExtra("startdate",0) + " " + data.getIntExtra("starttime",0) + " " + data.getIntExtra("endtime",0));
         Calendar startdate = Calendar.getInstance();
-        startdate.setTimeInMillis(data.getLongExtra("startdate",0));
+        startdate.setTimeInMillis(data.getLongExtra("startdate",0) + data.getIntExtra("starttime",480)*60*1000);
         setupAdvertising(startdate, data.getIntExtra("starttime", 480), data.getIntExtra("endtime", 1080), data.getIntExtra("flags", 0));
         startBTLE();
     }
