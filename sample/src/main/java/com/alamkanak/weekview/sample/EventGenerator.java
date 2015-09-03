@@ -24,14 +24,22 @@ public class EventGenerator {
         eventsF2_2_3 = flip(eventsU2_2_3);
     }
 
-    List<WeekViewEvent> getEvents(int year, int month, int user, int fill) {
+    List<WeekViewEvent> getEvents(int year, int month, int user, int fill, boolean flip) {
         if (year != 2015 || month != 10) return new ArrayList<>();
 
-        if (user == 1 && fill == 1) return eventsU1_1_3;
-        if (user == 1 && fill == 2) return eventsU1_2_3;
+        if (!flip) {
+            if (user == 1 && fill == 1) return eventsU1_1_3;
+            if (user == 1 && fill == 2) return eventsU1_2_3;
 
-        if (user == 2 && fill == 1) return eventsU2_1_3;
-        if (user == 2 && fill == 2) return eventsU2_2_3;
+            if (user == 2 && fill == 1) return eventsU2_1_3;
+            if (user == 2 && fill == 2) return eventsU2_2_3;
+        } else  {
+            if (user == 1 && fill == 1) return eventsF1_1_3;
+            if (user == 1 && fill == 2) return eventsF1_2_3;
+
+            if (user == 2 && fill == 1) return eventsF2_1_3;
+            if (user == 2 && fill == 2) return eventsF2_2_3;
+        }
 
         return new ArrayList<>();
     }
