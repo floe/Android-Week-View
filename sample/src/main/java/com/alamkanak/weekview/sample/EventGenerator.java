@@ -1,33 +1,70 @@
 package com.alamkanak.weekview.sample;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import com.alamkanak.weekview.WeekViewEvent;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 public class EventGenerator {
 
     public EventGenerator() {
+        eventsU1_1_3 = createListU1_1_3();
+        eventsU1_2_3 = createListU1_2_3();
+        eventsU2_1_3 = createListU2_1_3();
+        eventsU2_2_3 = createListU2_2_3();
 
+        eventsF1_1_3 = flip(eventsU1_1_3);
+        eventsF1_2_3 = flip(eventsU1_2_3);
+        eventsF2_1_3 = flip(eventsU2_1_3);
+        eventsF2_2_3 = flip(eventsU2_2_3);
     }
 
     List<WeekViewEvent> getEvents(int year, int month, int user, int fill) {
         if (year != 2015 || month != 10) return new ArrayList<>();
 
-        if (user == 1 && fill == 1) return createListU1_1_3();
-        if (user == 1 && fill == 2) return createListU1_2_3();
+        if (user == 1 && fill == 1) return eventsU1_1_3;
+        if (user == 1 && fill == 2) return eventsU1_2_3;
 
-        if (user == 2 && fill == 1) return createListU2_1_3();
-        if (user == 2 && fill == 2) return createListU2_2_3();
+        if (user == 2 && fill == 1) return eventsU2_1_3;
+        if (user == 2 && fill == 2) return eventsU2_2_3;
 
         return new ArrayList<>();
     }
 
+    private ArrayList<WeekViewEvent> flip(ArrayList<WeekViewEvent> list) {
+
+        Calendar startpoint = Calendar.getInstance();
+        startpoint.set(2015,9,5,9,0);
+        Calendar endpoint = Calendar.getInstance();
+        endpoint.set(2015, 9, 16, 19, 0);
+
+        ArrayList<WeekViewEvent> result = new ArrayList<WeekViewEvent>();
+
+        for (WeekViewEvent event: list) {
+
+            Calendar newEnd = (Calendar) event.getStartTime().clone();
+            Calendar newStart = (Calendar) event.getEndTime().clone();
+
+            long diff = endpoint.getTimeInMillis() - newEnd.getTimeInMillis();
+            newEnd.setTimeInMillis(startpoint.getTimeInMillis()+diff);
+
+            diff = endpoint.getTimeInMillis() - newStart.getTimeInMillis();
+            newStart.setTimeInMillis(startpoint.getTimeInMillis()+diff);
+
+            WeekViewEvent newEvent = new WeekViewEvent(event.getId(),MainActivity.getEventTitle(newStart),newStart,newEnd);
+            result.add(0,newEvent);
+        }
+
+        return result;
+    }
+
     // appointments are Oct 5 - Oct 9, Oct 12 - Oct 16
-    // none on weekends, time range is 9:00 - 18:00
+    // none on weekends, time range is 9:00 - 19:00
 
     // checked
     private ArrayList<WeekViewEvent> createListU2_2_3() {
@@ -1350,4 +1387,13 @@ public class EventGenerator {
         return events;
     }
 
+    private ArrayList<WeekViewEvent> eventsU1_1_3;
+    private ArrayList<WeekViewEvent> eventsU1_2_3;
+    private ArrayList<WeekViewEvent> eventsU2_1_3;
+    private ArrayList<WeekViewEvent> eventsU2_2_3;
+
+    private ArrayList<WeekViewEvent> eventsF1_1_3;
+    private ArrayList<WeekViewEvent> eventsF1_2_3;
+    private ArrayList<WeekViewEvent> eventsF2_1_3;
+    private ArrayList<WeekViewEvent> eventsF2_2_3;
 }
