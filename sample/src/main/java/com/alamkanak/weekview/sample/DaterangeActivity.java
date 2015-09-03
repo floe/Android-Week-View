@@ -19,7 +19,7 @@ public class DaterangeActivity extends Activity {
         setContentView(R.layout.activity_daterange);
 
         TimePicker tp1 = (TimePicker)findViewById(R.id.timepicker ); tp1.setIs24HourView(true); tp1.setCurrentHour( 9); tp1.setCurrentMinute(0);
-        TimePicker tp2 = (TimePicker)findViewById(R.id.timepicker2); tp2.setIs24HourView(true); tp2.setCurrentHour(18); tp2.setCurrentMinute(0);
+        TimePicker tp2 = (TimePicker)findViewById(R.id.timepicker2); tp2.setIs24HourView(true); tp2.setCurrentHour(19); tp2.setCurrentMinute(0);
 
         RadioGroup rg = (RadioGroup)findViewById(R.id.radiogroup); rg.check(R.id.radioButton2);
         DatePicker dp  = (DatePicker)findViewById(R.id.datePicker); dp.updateDate(2015,9,5);

@@ -264,6 +264,9 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         btleAdvCallback = new myAdvertisingCallback();
 
         btleEvents = new HashMap<String,List<WeekViewEvent>>();
+
+        // auto-enable CalendarCast when alternative calendar in use
+        mySwitch.setChecked(getFlipped());
     }
 
     public void setupAdvertising( Calendar startdate, int starttime, int endtime, int flags ) {
@@ -280,7 +283,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
 
         byte[] rawAdvData = {
                 0x41, 0x49, // 16713 days since 1970-01-01 = 2015-10-05
-                0x06, 0x49, // start at 9:00, end at 18:00, slot length 30 min, no saturdays/sundays
+                0x06, 0x69, // start at 9:00, end at 19:00, slot length 30 min, no saturdays/sundays
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
@@ -290,13 +293,21 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
 
         for (WeekViewEvent event: events) {
 
+            // FIXME: this assumes that no events are outside the desired daily start and end times
             // calculate difference between end of prev. event and current event
             long diff = event.getStartTime().getTimeInMillis() - prev.getEndTime().getTimeInMillis();
             if (diff < 0) continue;
             int slotcount = (int)(diff/(1000*60)) / slotlength;
 
+            // correctly skip weekends/nights
+            // FIXME: this won't work when rolling over from Dec 31st to Jan 1st
+            int daydiff = event.getStartTime().get(Calendar.DAY_OF_YEAR) - prev.getEndTime().get(Calendar.DAY_OF_YEAR);
+            if (daydiff > 0) {
+                slotcount -= (24*60 - (endtime - starttime)) / slotlength;
+                slotcount -= ((daydiff - 1)*24*60) / slotlength;
+            }
+
             // set corresponding number of slot bits to zero (i.e. skip them)
-            // TODO: correctly skip weekends/nights
             bit += slotcount;
 
             //calculate length of current event
@@ -307,7 +318,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
             // set corresponding number of slot bits to one
             for (int i = 0; i < slotcount; i++) {
                 int byteoffs = (bit+i)/8;
-                if (byteoffs > rawAdvData.length) break;
+                if (byteoffs >= rawAdvData.length) break;
                 int bitoffs  = (bit+i)%8;
                 rawAdvData[byteoffs] |= (1 << bitoffs);
             }
@@ -361,8 +372,8 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
 
         Log.d("Intent", data.getLongExtra("startdate",0) + " " + data.getIntExtra("starttime",0) + " " + data.getIntExtra("endtime",0));
         Calendar startdate = Calendar.getInstance();
-        startdate.setTimeInMillis(data.getLongExtra("startdate",0) + data.getIntExtra("starttime",480)*60*1000);
-        setupAdvertising(startdate, data.getIntExtra("starttime", 480), data.getIntExtra("endtime", 1080), data.getIntExtra("flags", 0));
+        startdate.setTimeInMillis(data.getLongExtra("startdate",0) + data.getIntExtra("starttime", 480) * 60 * 1000);
+        setupAdvertising(startdate, data.getIntExtra("starttime", 480), data.getIntExtra("endtime", 1140), data.getIntExtra("flags", 0));
         startBTLE();
     }
 
