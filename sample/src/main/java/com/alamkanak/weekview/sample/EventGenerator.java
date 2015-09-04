@@ -97,7 +97,7 @@ public class EventGenerator {
         event.setColor(color);
         events.add(event);
         
-        //05.10.2015 15:30-18:00
+        //05.10.2015 15:30-17:30
         startTime = Calendar.getInstance();
         startTime.set(Calendar.DAY_OF_MONTH, 5);
         startTime.set(Calendar.HOUR_OF_DAY, 15);
@@ -105,8 +105,8 @@ public class EventGenerator {
         startTime.set(Calendar.MONTH, newMonth-1);
         startTime.set(Calendar.YEAR, newYear);
         endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 18);
-        endTime.set(Calendar.MINUTE, 0);
+        endTime.set(Calendar.HOUR_OF_DAY, 17);
+        endTime.set(Calendar.MINUTE, 30);
         event = new WeekViewEvent(2,MainActivity.getEventTitle(startTime), startTime, endTime);
         event.setColor(color);
         events.add(event);
@@ -182,7 +182,7 @@ public class EventGenerator {
         events.add(event);
         
         //08.10.2015 13:30-14:00
-        startTime = Calendar.getInstance();
+        /*startTime = Calendar.getInstance();
         startTime.set(Calendar.DAY_OF_MONTH, 8);
         startTime.set(Calendar.HOUR_OF_DAY, 13);
         startTime.set(Calendar.MINUTE, 30);
@@ -193,13 +193,13 @@ public class EventGenerator {
         endTime.set(Calendar.MINUTE, 0);
         event = new WeekViewEvent(8,MainActivity.getEventTitle(startTime), startTime, endTime);
         event.setColor(color);
-        events.add(event);
+        events.add(event);*/
         
-        //08.10.2015 14:30-17:00
+        //08.10.2015 15:00-17:00
         startTime = Calendar.getInstance();
         startTime.set(Calendar.DAY_OF_MONTH, 8);
-        startTime.set(Calendar.HOUR_OF_DAY, 14);
-        startTime.set(Calendar.MINUTE, 30);
+        startTime.set(Calendar.HOUR_OF_DAY, 15);
+        startTime.set(Calendar.MINUTE, 0);
         startTime.set(Calendar.MONTH, newMonth-1);
         startTime.set(Calendar.YEAR, newYear);
         endTime = (Calendar) startTime.clone();
@@ -279,7 +279,7 @@ public class EventGenerator {
         event.setColor(color);
         events.add(event);
         
-        //13.10.2015 12:30-15:30
+        //13.10.2015 12:30-15:00
         startTime = Calendar.getInstance();
         startTime.set(Calendar.DAY_OF_MONTH, 13);
         startTime.set(Calendar.HOUR_OF_DAY, 12);
@@ -288,7 +288,7 @@ public class EventGenerator {
         startTime.set(Calendar.YEAR, newYear);
         endTime = (Calendar) startTime.clone();
         endTime.set(Calendar.HOUR_OF_DAY, 15);
-        endTime.set(Calendar.MINUTE, 30);
+        endTime.set(Calendar.MINUTE, 0);
         event = new WeekViewEvent(15,MainActivity.getEventTitle(startTime), startTime, endTime);
         event.setColor(color);
         events.add(event);
@@ -363,7 +363,7 @@ public class EventGenerator {
         event.setColor(color);
         events.add(event);
         
-        //16.10.2015 15:00-18:30
+        //16.10.2015 15:00-18:00
         startTime = Calendar.getInstance();
         startTime.set(Calendar.DAY_OF_MONTH, 16);
         startTime.set(Calendar.HOUR_OF_DAY, 15);
@@ -372,7 +372,7 @@ public class EventGenerator {
         startTime.set(Calendar.YEAR, newYear);
         endTime = (Calendar) startTime.clone();
         endTime.set(Calendar.HOUR_OF_DAY, 18);
-        endTime.set(Calendar.MINUTE, 30);
+        endTime.set(Calendar.MINUTE, 0);
         event = new WeekViewEvent(21,MainActivity.getEventTitle(startTime), startTime, endTime);
         event.setColor(color);
         events.add(event);
@@ -1112,11 +1112,11 @@ public class EventGenerator {
         event.setColor(color);
         events.add(event);
 
-        //06.10.2015 11:30-12:00
+        //06.10.2015 11:00-12:00
         startTime = Calendar.getInstance();
         startTime.set(Calendar.DAY_OF_MONTH, 6);
         startTime.set(Calendar.HOUR_OF_DAY, 11);
-        startTime.set(Calendar.MINUTE, 30);
+        startTime.set(Calendar.MINUTE, 0);
         startTime.set(Calendar.MONTH, newMonth-1);
         startTime.set(Calendar.YEAR, newYear);
         endTime = (Calendar) startTime.clone();
