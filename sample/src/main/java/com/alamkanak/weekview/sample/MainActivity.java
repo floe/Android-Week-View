@@ -115,6 +115,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         slot_length = (slot_length+1)*15;
         int slots_per_day = (end_hour - start_hour) * 60 / slot_length;
         int ignored_slots = (24*60 / slot_length) - slots_per_day;
+        int weekends = 0;
         int current_day = 0;
         int slot_duration = 0;
 
@@ -126,6 +127,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
 
         Calendar current_start = null;
 
+        // FIXME: appointments ending at end of daily time range merge with following day
         while (i < (raw.length-4)*8) {
             if (i%8 == 0) tmp = raw[4+(i/8)];
             if (((tmp >> i%8) & 0x01) == 0) {
@@ -143,7 +145,10 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
                 // new slot has started, set start date/time
                 if (slot_duration == 0) {
                     current_start = (Calendar)start.clone();
-                    current_start.add(Calendar.MILLISECOND, (i + current_day*ignored_slots) * slot_length * 60*1000 );
+                    current_start.add(Calendar.MILLISECOND, (i + current_day*ignored_slots + weekends) * slot_length * 60*1000 );
+                    // skip saturday/sunday, unless indicated by header fields
+                    if (current_start.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY && inc_saturday == 0) { current_start.add(Calendar.DATE,1); weekends += ignored_slots + slots_per_day; }
+                    if (current_start.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY   && inc_sunday   == 0) { current_start.add(Calendar.DATE,1); weekends += ignored_slots + slots_per_day; }
                 }
                 slot_duration += slot_length;
             }
@@ -242,7 +247,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         Switch mySwitch = (Switch)findViewById(R.id.toggleButton);
         mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ((MainActivity)buttonView.getContext()).onButtonToggle(isChecked);
+                ((MainActivity) buttonView.getContext()).onButtonToggle(isChecked);
             }
         });
 
