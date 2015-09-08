@@ -12,6 +12,8 @@ import java.util.List;
 
 public class EventGenerator {
 
+    public static int counter = 1;
+
     public EventGenerator() {
         eventsU1_1_3 = createListU1_1_3();
         eventsU1_2_3 = createListU1_2_3();
@@ -33,7 +35,7 @@ public class EventGenerator {
 
             if (user == 2 && fill == 1) return eventsU2_1_3;
             if (user == 2 && fill == 2) return eventsU2_2_3;
-        } else  {
+        } else {
             if (user == 1 && fill == 1) return eventsF1_1_3;
             if (user == 1 && fill == 2) return eventsF1_2_3;
 
@@ -42,6 +44,21 @@ public class EventGenerator {
         }
 
         return new ArrayList<>();
+    }
+
+    private void createEvent(ArrayList<WeekViewEvent> list, int color, int day, int newMonth, int newYear, int sh, int sm, int eh, int em) {
+        Calendar startTime = Calendar.getInstance();
+        startTime.set(Calendar.DAY_OF_MONTH,day);
+        startTime.set(Calendar.HOUR_OF_DAY,sh);
+        startTime.set(Calendar.MINUTE,sm);
+        startTime.set(Calendar.MONTH,newMonth-1);
+        startTime.set(Calendar.YEAR,newYear);
+        Calendar endTime = (Calendar) startTime.clone();
+        endTime.set(Calendar.HOUR_OF_DAY,eh);
+        endTime.set(Calendar.MINUTE,em);
+        WeekViewEvent event = new WeekViewEvent(counter++, MainActivity.getEventTitle(startTime), startTime, endTime);
+        event.setColor(color);
+        list.add(event);
     }
 
     private ArrayList<WeekViewEvent> flip(ArrayList<WeekViewEvent> list) {
@@ -80,302 +97,27 @@ public class EventGenerator {
         ArrayList<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
 
         int color = Color.parseColor("#59dbe0");
-        int newMonth = 10; // October
-        int newYear = 2015;
 
-        //05.10.2015 9:00-11:00
-        Calendar startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 5);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        Calendar endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 11);
-        endTime.set(Calendar.MINUTE, 0);
-        WeekViewEvent event = new WeekViewEvent(1,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //05.10.2015 15:30-17:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 5);
-        startTime.set(Calendar.HOUR_OF_DAY, 15);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 17);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(2,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //06.10.2015 9:00-10:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 6);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 10);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(3,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //06.10.2015 16:30-18:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 6);
-        startTime.set(Calendar.HOUR_OF_DAY, 16);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 18);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(4,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //07.10.2015 10:00-11:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 7);
-        startTime.set(Calendar.HOUR_OF_DAY, 10);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 11);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(5,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //07.10.2015 15:00-16:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 7);
-        startTime.set(Calendar.HOUR_OF_DAY, 15);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 16);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(6,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //08.10.2015 9:00-11:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 8);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 11);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(7,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //08.10.2015 13:30-14:00
-        /*startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 8);
-        startTime.set(Calendar.HOUR_OF_DAY, 13);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 14);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(8,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);*/
-        
-        //08.10.2015 15:00-17:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 8);
-        startTime.set(Calendar.HOUR_OF_DAY, 15);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 17);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(9,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //09.10.2015 10:00-12:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 9);
-        startTime.set(Calendar.HOUR_OF_DAY, 10);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 12);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(10,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //09.10.2015 16:00-19:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 9);
-        startTime.set(Calendar.HOUR_OF_DAY, 16);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 19);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(11,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //12.10.2015 9:30-11:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 12);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 11);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(12,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //12.10.2015 14:00-17:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 12);
-        startTime.set(Calendar.HOUR_OF_DAY, 14);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 17);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(13,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //13.10.2015 9:30-10:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 13);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 10);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(14,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //13.10.2015 12:30-15:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 13);
-        startTime.set(Calendar.HOUR_OF_DAY, 12);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 15);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(15,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //14.10.2015 9:30-10:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 14);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 10);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(16,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //14.10.2015 12:00-15:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 14);
-        startTime.set(Calendar.HOUR_OF_DAY, 12);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 15);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(17,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //15.10.2015 9:00-9:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 15);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 9);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(18,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //15.10.2015 11:00-14:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 15);
-        startTime.set(Calendar.HOUR_OF_DAY, 11);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 14);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(19,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //16.10.2015 10:30-12:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 16);
-        startTime.set(Calendar.HOUR_OF_DAY, 10);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 12);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(20,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //16.10.2015 15:00-18:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 16);
-        startTime.set(Calendar.HOUR_OF_DAY, 15);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 18);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(21,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
+        createEvent(events,color, 5,10,2015, 9,00,11,00);
+        createEvent(events,color, 5,10,2015,15,30,17,30);
+        createEvent(events,color, 6,10,2015, 9,00,10,00);
+        createEvent(events,color, 6,10,2015,16,30,18,30);
+        createEvent(events,color, 7,10,2015,10,00,11,00);
+        createEvent(events,color, 7,10,2015,15,00,16,30);
+        createEvent(events,color, 8,10,2015, 9,00,11,00);
+        createEvent(events,color, 8,10,2015,15,00,17,00);
+        createEvent(events,color, 9,10,2015,10,00,12,30);
+        createEvent(events,color, 9,10,2015,16,00,19,00);
+        createEvent(events,color,12,10,2015, 9,30,11,00);
+        createEvent(events,color,12,10,2015,14,00,17,00);
+        createEvent(events,color,13,10,2015, 9,30,10,30);
+        createEvent(events,color,13,10,2015,12,30,15,00);
+        createEvent(events,color,14,10,2015, 9,30,10,30);
+        createEvent(events,color,14,10,2015,12,00,15,30);
+        createEvent(events,color,15,10,2015, 9,00, 9,30);
+        createEvent(events,color,15,10,2015,11,00,14,00);
+        createEvent(events,color,16,10,2015,10,30,12,30);
+        createEvent(events,color,16,10,2015,15,00,18,00);
 
         return events;
     }
@@ -386,677 +128,65 @@ public class EventGenerator {
         ArrayList<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
 
         int color = Color.parseColor("#f57f68");
-        int newMonth = 10; // October
-        int newYear = 2015;
 
-        //05.10.2015 9:00-10:00
-        Calendar startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 5);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        Calendar endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 10);
-        endTime.set(Calendar.MINUTE, 0);
-        WeekViewEvent event = new WeekViewEvent(1,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //05.10.2015 16:30-17:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 5);
-        startTime.set(Calendar.HOUR_OF_DAY, 16);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 17);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(2,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //06.10.2015 9:30-10:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 6);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 10);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(3,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //06.10.2015 16:30-17:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 6);
-        startTime.set(Calendar.HOUR_OF_DAY, 16);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 17);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(4,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //07.10.2015 10:30-11:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 7);
-        startTime.set(Calendar.HOUR_OF_DAY, 10);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 11);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(5,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //07.10.2015 15:30-16:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 7);
-        startTime.set(Calendar.HOUR_OF_DAY, 15);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 16);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(6,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //08.10.2015 9:30-11:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 8);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 11);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(7,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //08.10.2015 15:00-16:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 8);
-        startTime.set(Calendar.HOUR_OF_DAY, 15);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 16);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(8,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //09.10.2015 10:00-11:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 9);
-        startTime.set(Calendar.HOUR_OF_DAY, 10);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 11);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(9,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //09.10.2015 17:30-19:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 9);
-        startTime.set(Calendar.HOUR_OF_DAY, 17);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 19);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(10,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //12.10.2015 9:30-10:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 12);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 10);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(11,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //12.10.2015 15:00-16:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 12);
-        startTime.set(Calendar.HOUR_OF_DAY, 15);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 16);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(12,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //13.10.2015 9:30-10:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 13);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 10);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(13,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //13.10.2015 14:00-15:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 13);
-        startTime.set(Calendar.HOUR_OF_DAY, 14);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 15);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(14,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //14.10.2015 10:00-10:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 14);
-        startTime.set(Calendar.HOUR_OF_DAY, 10);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 10);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(15,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //14.10.2015 13:00-14:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 14);
-        startTime.set(Calendar.HOUR_OF_DAY, 13);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 14);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(16,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //15.10.2015 9:00-9:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 15);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 9);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(17,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //15.10.2015 11:00-13:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 15);
-        startTime.set(Calendar.HOUR_OF_DAY, 11);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 13);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(18,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //16.10.2015 11:30-12:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 16);
-        startTime.set(Calendar.HOUR_OF_DAY, 11);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 12);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(19,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //16.10.2015 15:00-15:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 16);
-        startTime.set(Calendar.HOUR_OF_DAY, 15);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 15);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(20,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //16.10.2015 17:30-18:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 16);
-        startTime.set(Calendar.HOUR_OF_DAY, 17);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 18);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(21,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
+        createEvent(events,color, 5,10,2015, 9,00,10,00);
+        createEvent(events,color, 5,10,2015,16,30,17,30);
+        createEvent(events,color, 6,10,2015, 9,30,10,00);
+        createEvent(events,color, 6,10,2015,16,30,17,00);
+        createEvent(events,color, 7,10,2015,10,30,11,00);
+        createEvent(events,color, 7,10,2015,15,30,16,30);
+        createEvent(events,color, 8,10,2015, 9,30,11,00);
+        createEvent(events,color, 8,10,2015,15,00,16,30);
+        createEvent(events,color, 9,10,2015,10,00,11,00);
+        createEvent(events,color, 9,10,2015,17,30,19,00);
+        createEvent(events,color,12,10,2015, 9,30,10,00);
+        createEvent(events,color,12,10,2015,15,00,16,00);
+        createEvent(events,color,13,10,2015, 9,30,10,00);
+        createEvent(events,color,13,10,2015,14,00,15,00);
+        createEvent(events,color,14,10,2015,10,00,10,30);
+        createEvent(events,color,14,10,2015,13,00,14,30);
+        createEvent(events,color,15,10,2015, 9,00, 9,30);
+        createEvent(events,color,15,10,2015,11,00,13,00);
+        createEvent(events,color,16,10,2015,11,30,12,30);
+        createEvent(events,color,16,10,2015,15,00,15,30);
+        createEvent(events,color,16,10,2015,17,30,18,30);
         
         return events;
     }
 
+    // checked
     private ArrayList<WeekViewEvent> createListU1_2_3() {
 
         ArrayList<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
 
         int color = Color.parseColor("#87d288");
-        int newMonth = 10; // October
-        int newYear = 2015;
 
-        //05.10.2015 9:00-9:30
-        Calendar startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 5);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        Calendar endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 9);
-        endTime.set(Calendar.MINUTE, 30);
-        WeekViewEvent event = new WeekViewEvent(1,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //05.10.2015 12:00-13:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 5);
-        startTime.set(Calendar.HOUR_OF_DAY, 12);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 13);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(2,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //05.10.2015 17:00-19:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 5);
-        startTime.set(Calendar.HOUR_OF_DAY, 17);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 19);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(3,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //06.10.2015 11:00-13:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 6);
-        startTime.set(Calendar.HOUR_OF_DAY, 11);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 13);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(4,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //06.10.2015 16:00-19:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 6);
-        startTime.set(Calendar.HOUR_OF_DAY, 16);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 19);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(5,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //07.10.2015 10:00-10:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 7);
-        startTime.set(Calendar.HOUR_OF_DAY, 10);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 10);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(6,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //07.10.2015 13:30-14:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 7);
-        startTime.set(Calendar.HOUR_OF_DAY, 13);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 14);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(7,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //07.10.2015 17:00-19:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 7);
-        startTime.set(Calendar.HOUR_OF_DAY, 17);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 19);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(8,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //08.10.2015 9:30-10:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 8);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 10);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(9,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //08.10.2015 13:00-14:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 8);
-        startTime.set(Calendar.HOUR_OF_DAY, 13);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 14);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(10,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //08.10.2015 14:30-16:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 8);
-        startTime.set(Calendar.HOUR_OF_DAY, 14);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 16);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(11,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //08.10.2015 18:00-18:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 8);
-        startTime.set(Calendar.HOUR_OF_DAY, 18);
-        startTime.set(Calendar.MINUTE, 00);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 18);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(12,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //09.10.2015 9:00-10:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 9);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 10);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(13,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //09.10.2015 12:30-16:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 9);
-        startTime.set(Calendar.HOUR_OF_DAY, 12);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 16);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(14,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //12.10.2015 9:30-11:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 12);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 11);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(15,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //12.10.2015 18:30-19:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 12);
-        startTime.set(Calendar.HOUR_OF_DAY, 18);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 19);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(16,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //13.10.2015 9:30-10:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 13);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 10);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(17,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //13.10.2015 15:00-18:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 13);
-        startTime.set(Calendar.HOUR_OF_DAY, 15);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 18);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(18,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //14.10.2015 9:00-11:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 14);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 11);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(19,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //14.10.2015 18:00-19:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 14);
-        startTime.set(Calendar.HOUR_OF_DAY, 18);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 19);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(20,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //15.10.2015 10:00-11:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 15);
-        startTime.set(Calendar.HOUR_OF_DAY, 10);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 11);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(21,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //15.10.2015 12:00-13:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 15);
-        startTime.set(Calendar.HOUR_OF_DAY, 12);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 13);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(22,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //15.10.2015 14:30-15:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 15);
-        startTime.set(Calendar.HOUR_OF_DAY, 14);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 15);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(23,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //15.10.2015 17:00-19:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 15);
-        startTime.set(Calendar.HOUR_OF_DAY, 17);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 19);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(24,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //16.10.2015 9:30-11:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 16);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 11);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(25,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-        
-        //16.10.2015 15:30-19:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 16);
-        startTime.set(Calendar.HOUR_OF_DAY, 15);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 19);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(26,MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
+        createEvent(events,color, 5,10,2015, 9,00, 9,30);
+        createEvent(events,color, 5,10,2015,12,00,13,30);
+        createEvent(events,color, 5,10,2015,17,00,19,00);
+        createEvent(events,color, 6,10,2015,11,00,13,00);
+        createEvent(events,color, 6,10,2015,16,00,19,00);
+        createEvent(events,color, 7,10,2015,10,00,10,30);
+        createEvent(events,color, 7,10,2015,13,30,14,00);
+        createEvent(events,color, 7,10,2015,17,00,19,00);
+        createEvent(events,color, 8,10,2015, 9,30,10,30);
+        createEvent(events,color, 8,10,2015,13,00,14,00);
+        createEvent(events,color, 8,10,2015,14,30,16,00);
+        createEvent(events,color, 8,10,2015,18,00,18,30);
+        createEvent(events,color, 9,10,2015, 9,00,10,30);
+        createEvent(events,color, 9,10,2015,12,30,16,00);
+        createEvent(events,color,12,10,2015, 9,30,11,00);
+        createEvent(events,color,12,10,2015,18,30,19,00);
+        createEvent(events,color,13,10,2015, 9,30,10,30);
+        createEvent(events,color,13,10,2015,15,00,18,00);
+        createEvent(events,color,14,10,2015, 9,00,11,30);
+        createEvent(events,color,14,10,2015,18,00,19,00);
+        createEvent(events,color,15,10,2015,10,00,11,00);
+        createEvent(events,color,15,10,2015,12,00,13,00);
+        createEvent(events,color,15,10,2015,14,30,15,00);
+        createEvent(events,color,15,10,2015,17,00,19,00);
+        createEvent(events,color,16,10,2015, 9,30,11,00);
+        createEvent(events,color,16,10,2015,15,30,19,00);
 
         return events;
     }
@@ -1067,330 +197,30 @@ public class EventGenerator {
         ArrayList<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
 
         int color = Color.parseColor("#f8b552");
-        int newMonth = 10; // October
-        int newYear = 2015;
 
-        //05.10.2015 9:00-9:30
-        Calendar startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 5);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        Calendar endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 9);
-        endTime.set(Calendar.MINUTE, 30);
-        WeekViewEvent event = new WeekViewEvent(1, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //05.10.2015 13:00-13:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 5);
-        startTime.set(Calendar.HOUR_OF_DAY, 13);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 13);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(2, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //05.10.2015 17:00-18:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 5);
-        startTime.set(Calendar.HOUR_OF_DAY, 17);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 18);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(3, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //06.10.2015 11:00-12:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 6);
-        startTime.set(Calendar.HOUR_OF_DAY, 11);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 12);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(4, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //06.10.2015 16:00-17:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 6);
-        startTime.set(Calendar.HOUR_OF_DAY, 16);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 17);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(5, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //06.10.2015 18:30-19:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 6);
-        startTime.set(Calendar.HOUR_OF_DAY, 18);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 19);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(6, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //07.10.2015 13:30-14:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 7);
-        startTime.set(Calendar.HOUR_OF_DAY, 13);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 14);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(7, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //07.10.2015 17:30-19:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 7);
-        startTime.set(Calendar.HOUR_OF_DAY, 17);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 19);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(8, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //08.10.2015 9:30-10:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 8);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 10);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(9, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //08.10.2015 15:00-16:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 8);
-        startTime.set(Calendar.HOUR_OF_DAY, 15);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 16);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(10, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //08.10.2015 18:00-18:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 8);
-        startTime.set(Calendar.HOUR_OF_DAY, 18);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 18);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(11, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //09.10.2015 9:30-10:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 9);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 10);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(12, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //09.10.2015 13:30-14:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 9);
-        startTime.set(Calendar.HOUR_OF_DAY, 13);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 14);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(13, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //12.10.2015 9:30-10:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 12);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 10);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(14, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //12.10.2015 18:30-19:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 12);
-        startTime.set(Calendar.HOUR_OF_DAY, 18);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 19);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(15, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //13.10.2015 9:30-10:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 13);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 10);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(16, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //13.10.2015 16:00-17:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 13);
-        startTime.set(Calendar.HOUR_OF_DAY, 16);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 17);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(17, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //14.10.2015 10:00-11:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 14);
-        startTime.set(Calendar.HOUR_OF_DAY, 10);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 11);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(18, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //15.10.2015 10:30-11:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 15);
-        startTime.set(Calendar.HOUR_OF_DAY, 10);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 11);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(19, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //15.10.2015 14:30-15:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 15);
-        startTime.set(Calendar.HOUR_OF_DAY, 14);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 15);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(20, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //15.10.2015 18:00-19:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 15);
-        startTime.set(Calendar.HOUR_OF_DAY, 18);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 19);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(21, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //16.10.2015 9:30-10:30
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 16);
-        startTime.set(Calendar.HOUR_OF_DAY, 9);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 10);
-        endTime.set(Calendar.MINUTE, 30);
-        event = new WeekViewEvent(22, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
-
-        //16.10.2015 17:30-19:00
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 16);
-        startTime.set(Calendar.HOUR_OF_DAY, 17);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 19);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(23, MainActivity.getEventTitle(startTime), startTime, endTime);
-        event.setColor(color);
-        events.add(event);
+        createEvent(events,color, 5,10,2015, 9,00, 9,30);
+        createEvent(events,color, 5,10,2015,13,00,13,30);
+        createEvent(events,color, 5,10,2015,17,00,18,30);
+        createEvent(events,color, 6,10,2015,11,00,12,00);
+        createEvent(events,color, 6,10,2015,16,00,17,00);
+        createEvent(events,color, 6,10,2015,18,30,19,00);
+        createEvent(events,color, 7,10,2015,13,30,14,00);
+        createEvent(events,color, 7,10,2015,17,30,19,00);
+        createEvent(events,color, 8,10,2015, 9,30,10,00);
+        createEvent(events,color, 8,10,2015,15,00,16,00);
+        createEvent(events,color, 8,10,2015,18,00,18,30);
+        createEvent(events,color, 9,10,2015, 9,30,10,30);
+        createEvent(events,color, 9,10,2015,13,30,14,30);
+        createEvent(events,color,12,10,2015, 9,30,10,30);
+        createEvent(events,color,12,10,2015,18,30,19,00);
+        createEvent(events,color,13,10,2015, 9,30,10,00);
+        createEvent(events,color,13,10,2015,16,00,17,00);
+        createEvent(events,color,14,10,2015,10,00,11,00);
+        createEvent(events,color,15,10,2015,10,30,11,30);
+        createEvent(events,color,15,10,2015,14,30,15,00);
+        createEvent(events,color,15,10,2015,18,00,19,00);
+        createEvent(events,color,16,10,2015, 9,30,10,30);
+        createEvent(events,color,16,10,2015,17,30,19,00);
 
         return events;
     }
