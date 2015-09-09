@@ -137,7 +137,7 @@ public class EventGenerator {
         createEvent(events,color, 7,10,2015,10,30,11,00);
         createEvent(events,color, 7,10,2015,15,30,16,30);
         createEvent(events,color, 8,10,2015, 9,30,11,00);
-        createEvent(events,color, 8,10,2015,15,00,16,30);
+        createEvent(events,color, 8,10,2015,13,00,14,30);
         createEvent(events,color, 9,10,2015,10,00,11,00);
         createEvent(events,color, 9,10,2015,17,30,19,00);
         createEvent(events,color,12,10,2015, 9,30,10,00);
@@ -207,7 +207,7 @@ public class EventGenerator {
         createEvent(events,color, 7,10,2015,13,30,14,00);
         createEvent(events,color, 7,10,2015,17,30,19,00);
         createEvent(events,color, 8,10,2015, 9,30,10,00);
-        createEvent(events,color, 8,10,2015,15,00,16,00);
+        createEvent(events,color, 8,10,2015,13,00,14,00);
         createEvent(events,color, 8,10,2015,18,00,18,30);
         createEvent(events,color, 9,10,2015, 9,30,10,30);
         createEvent(events,color, 9,10,2015,13,30,14,30);
