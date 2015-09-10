@@ -120,7 +120,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         int slot_duration = 0;
 
         Log.d("BT",String.format("slot_length: %d, slots_per_day: %d, ignored_slots: %d",slot_length,slots_per_day,ignored_slots));
-        if (slots_per_day <= 0) return null;
+        if (slots_per_day != 20) return null; // sanity check
 
         // current bit offset (+ 4*8 bits header)
         int i = 0;
