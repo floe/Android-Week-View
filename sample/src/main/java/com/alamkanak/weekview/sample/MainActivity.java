@@ -120,6 +120,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
         int slot_duration = 0;
 
         Log.d("BT",String.format("slot_length: %d, slots_per_day: %d, ignored_slots: %d",slot_length,slots_per_day,ignored_slots));
+        if (slots_per_day <= 0) return null;
 
         // current bit offset (+ 4*8 bits header)
         int i = 0;
@@ -170,8 +171,6 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
                 Log.d("BT","got CC broadcast from "+addr);
                 if (btleEvents.containsKey(addr)) return;
 
-                Toast.makeText(MainActivity.this, "Received new CalendarCast from " + result.getDevice().getName(), Toast.LENGTH_LONG).show();
-
                 // get raw data - need to parse on our own
                 data = result.getScanRecord().getBytes();
                 ArrayList<Byte> map = new ArrayList<Byte>();
@@ -199,7 +198,11 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
                 }
                 Log.d("BT",String.format("length: %d, data: ",map.size()) + sb.toString());
 
-                btleEvents.put(addr, parse_calendar_cast(tmp));
+                List<WeekViewEvent> evlist = parse_calendar_cast(tmp);
+                if (evlist == null) return;
+
+                btleEvents.put(addr, evlist);
+                Toast.makeText(MainActivity.this, "Received new CalendarCast from " + result.getDevice().getName(), Toast.LENGTH_LONG).show();
                 mWeekView.notifyDatasetChanged();
             }
         }
