@@ -349,7 +349,7 @@ public class MainActivity extends ActionBarActivity implements WeekView.MonthCha
 
     public void startBTLE() {
         //((Switch)findViewById(R.id.toggleButton)).setChecked(true);
-        btleAdvertiser.startAdvertising(btleAdvSettings, btleAdvData1, btleAdvData2, btleAdvCallback);
+        if (btleAdvertiser != null) btleAdvertiser.startAdvertising(btleAdvSettings, btleAdvData1, btleAdvData2, btleAdvCallback);
         btleScanner.startScan(btleScanCallback);
         //btleScanner.startScan( btleFilter, btleSettings, new myScanCallback() );
         Log.d("BT", "scanning started");
